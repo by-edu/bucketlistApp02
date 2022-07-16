@@ -49,16 +49,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         override fun onBindViewHolder(holder: ItemHolder, position: Int) {
 
             val item = bucketlist[position]
-            holder.txtId.text = item.id.toString()
-            holder.txtDescription.text = item.description
-            holder.txtCreationDate.text = DBHelper.ISO_FORMAT.format(item.creationDate).toString()
-            holder.txtUpdateDate.text = DBHelper.ISO_FORMAT.format(item.updateDate).toString()
-            holder.txtStatus.text = item.status.toString()
+            holder.txtId.text = (item.id.toString().toInt() + 1).toString()
+            holder.txtDescription.text = "Description: " + item.description
+            holder.txtCreationDate.text = "Date created: "+ DBHelper.ISO_FORMAT.format(item.creationDate).toString()
+            holder.txtUpdateDate.text = "Date updated: " + DBHelper.ISO_FORMAT.format(item.updateDate).toString()
+            holder.txtStatus.text = Item.STATUS_DESCRIPTIONS[item.status]
 
         }
 
         override fun getItemCount(): Int {
-            return 0
+            return bucketlist.size
         }
     }
 
@@ -68,6 +68,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
     fun populateRecyclerView() {
         val db = dbHelper.readableDatabase
         val items = mutableListOf<Item>()
+
+        db.execSQL(
+            """
+            DROP TABLE IF EXISTS bucketList
+        """)
+        dbHelper.onCreate(db)
+        // The list would stay the same if not for these
+
         val cursor = db.query(
             "bucketlist",
             null,
@@ -79,7 +87,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         )
         with (cursor) {
             while (moveToNext()) {
-                val id = getInt(0)
+                val id = position
                 val description    = getString(0)
                 val createdDate = DBHelper.ISO_FORMAT.parse(getString(1))
                 val updatedDate = DBHelper.ISO_FORMAT.parse(getString(2))
@@ -99,6 +107,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         dbHelper = DBHelper(this)
         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+
 
         populateRecyclerView()
 

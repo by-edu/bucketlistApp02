@@ -75,7 +75,7 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
         val cursor = db.query(
             "bucketlist",
             null,
-            "id = \"${id}\"",
+            "rowid = \"${id}\"",
             null,
             null,
             null,
@@ -106,6 +106,7 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
         if (op == CREATE_OP) {
             try{
                 db.execSQL(
+
                     """
                             INSERT INTO bucketlist VALUES
                                 ("${description}","${createdDate}" ,"${updatedDate}","${status}")
@@ -127,7 +128,7 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
                         description = ${description},
                         status = ${status},
                         update_date = ${updatedDate}
-                        WHERE id = "${id}"
+                        WHERE rowid = "${id}"
                     """
                 )
                 Toast.makeText(this, "List item successfully updated!", Toast.LENGTH_SHORT).show()
