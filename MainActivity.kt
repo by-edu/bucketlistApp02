@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
 
     lateinit var recyclerView: RecyclerView
     lateinit var dbHelper: DBHelper
+    //var id : Int = 0
 
     // TODO #1: create the ItemHolder inner class
     // a holder object saves the references to view components of a recycler view item
@@ -43,17 +44,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.bucket_list, parent, false)
 
-            return ItemHolder(view)
+            return ItemHolder(view, )
         }
 
         override fun onBindViewHolder(holder: ItemHolder, position: Int) {
 
             val item = bucketlist[position]
-            holder.txtId.text = (item.id.toString().toInt() + 1).toString()
+            holder.txtId.text = (item.id.toString().toInt()).toString()
             holder.txtDescription.text = "Description: " + item.description
-            holder.txtCreationDate.text = "Date created: "+ DBHelper.ISO_FORMAT.format(item.creationDate).toString()
-            holder.txtUpdateDate.text = "Date updated: " + DBHelper.ISO_FORMAT.format(item.updateDate).toString()
-            holder.txtStatus.text = Item.STATUS_DESCRIPTIONS[item.status]
+            holder.txtCreationDate.text = "Date created: "+ DBHelper.USA_FORMAT.format(item.creationDate).toString()
+            holder.txtUpdateDate.text = "Date updated: " + DBHelper.USA_FORMAT.format(item.updateDate).toString()
+            holder.txtStatus.text = "Status: " + Item.STATUS_DESCRIPTIONS[item.status]
+
+            holder.itemView.setOnClickListener(onClickListener)
+            holder.itemView.setOnLongClickListener(onLongClickListener)
 
         }
 
@@ -78,7 +82,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
 
         val cursor = db.query(
             "bucketlist",
-            null,
+            arrayOf("rowid, description, creation_date, update_date, status"),
             null,
             null,
             null,
@@ -87,11 +91,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         )
         with (cursor) {
             while (moveToNext()) {
-                val id = position
-                val description    = getString(0)
-                val createdDate = DBHelper.ISO_FORMAT.parse(getString(1))
-                val updatedDate = DBHelper.ISO_FORMAT.parse(getString(2))
-                val spinnerState     = getInt(3)
+
+
+                val id = getInt(0)
+                val description    = getString(1)
+                val createdDate = DBHelper.ISO_FORMAT.parse(getString(2))
+                val updatedDate = DBHelper.ISO_FORMAT.parse(getString(3))
+                val spinnerState     = getInt(4)
                 val item = Item(id, description, createdDate, updatedDate, spinnerState)
                 items.add(item)
             }
@@ -107,8 +113,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         dbHelper = DBHelper(this)
         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-
 
         populateRecyclerView()
 
@@ -148,7 +152,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
                         db.execSQL(
                             """
                                 DELETE FROM bucketlist
-                                WHERE id = "${id}"
+                                WHERE rowid = "${id}"
                             """
                         )
 
