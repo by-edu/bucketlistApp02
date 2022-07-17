@@ -74,18 +74,19 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
     fun retrieveItem(id: Int): Item {
         val cursor = db.query(
             "bucketlist",
+            arrayOf("rowid, description, creation_date, update_date, status"),
             null,
-            "rowid = \"${id}\"",
             null,
             null,
             null,
             null)
         with (cursor){
             cursor.moveToNext()
-            val description    = getString(0)
-            val createdDate = DBHelper.ISO_FORMAT.parse(getString(1))
-            val updatedDate = DBHelper.ISO_FORMAT.parse(getString(2))
-            val spinnerState     = getInt(3)
+            val id = getInt(0)
+            val description    = getString(1)
+            val createdDate = DBHelper.ISO_FORMAT.parse(getString(2))
+            val updatedDate = DBHelper.ISO_FORMAT.parse(getString(3))
+            val spinnerState     = getInt(4)
             val item = Item(id, description, createdDate, updatedDate, spinnerState)
 
             return item
@@ -125,9 +126,9 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
                 db.execSQL(
                     """
                        UPDATE bucketlist SET 
-                        description = ${description},
-                        status = ${status},
-                        update_date = ${updatedDate}
+                        description = "${description}",
+                        status = "${status}",
+                        update_date = "${updatedDate}"
                         WHERE rowid = "${id}"
                     """
                 )

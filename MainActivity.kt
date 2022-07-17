@@ -119,7 +119,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
 
         // TODO #5: initialize the floating action button
         val fltBtnCreate : FloatingActionButton = findViewById(R.id.fltBtnCreate)
-        fltBtnCreate.setOnClickListener(this)
+        fltBtnCreate.setOnClickListener{
+
+            val intent = Intent(this, CreateUpdateActivity::class.java)
+            intent.putExtra("op", CreateUpdateActivity.CREATE_OP)
+            startActivity(intent)
+        }
 
     }
 
@@ -133,10 +138,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
     override fun onClick(view: View?) {
         if (view != null) {
 
-            val id = view.findViewById<TextView>(R.id.txtId).toString().toInt()
+            val textShow = view.findViewById<TextView>(R.id.txtId)
+            val id = textShow.getText().toString().toInt()
             val intent = Intent(this, CreateUpdateActivity::class.java)
-            intent.putExtra("op", CreateUpdateActivity.CREATE_OP)
-            intent.putExtra("id",id)
+            intent.putExtra("op", CreateUpdateActivity.UPDATE_OP)
+            intent.putExtra("id", id)
             startActivity(intent)
         }
     }
@@ -164,7 +170,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         }
 
         if (view != null) {
-            val id = view.findViewById<TextView>(R.id.txtId).toString().toInt()
+
+            val textShow = view.findViewById<TextView>(R.id.txtId)
+            val id = textShow.getText().toString().toInt()
             val alertDialogBuilder = AlertDialog.Builder(this)
             alertDialogBuilder.setMessage("Do you wish to delete this entry?")
             alertDialogBuilder.setPositiveButton("Yes", MyDialogInterfaceListener(id))
