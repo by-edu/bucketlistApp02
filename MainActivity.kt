@@ -73,11 +73,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         val db = dbHelper.readableDatabase
         val items = mutableListOf<Item>()
 
-        db.execSQL(
+        /*db.execSQL(
             """
             DROP TABLE IF EXISTS bucketList
         """)
-        dbHelper.onCreate(db)
+        dbHelper.onCreate(db)*/
         // The list would stay the same if not for these
 
         val cursor = db.query(

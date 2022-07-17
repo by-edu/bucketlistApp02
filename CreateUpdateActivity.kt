@@ -55,6 +55,7 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
 
         // TODO #12: set the button's text to "CREATE"; make sure the spinner's selection is Item.SCHEDULED and the spinner is not enabled
         if (op == CREATE_OP) {
+
             btnCreateUpdate.text = "Create"
             spnStatus.setSelection(0)
             //I think this works...
@@ -63,8 +64,14 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
         }
         // TODO #13: set the button's text to "UPDATE"; extract the item's id from the intent; use retrieveItem to retrieve the item's info; use the info to update the description and status view components
         else {
+            op = UPDATE_OP
+            id = intent.getIntExtra("id", id)
             btnCreateUpdate.text = "Update"
-            retrieveItem(id)
+            val item = retrieveItem(id)
+
+            edtDescription.setText(item.description)
+            spnStatus.setSelection(item.status)
+
 
         }
     }
@@ -75,7 +82,7 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
         val cursor = db.query(
             "bucketlist",
             arrayOf("rowid, description, creation_date, update_date, status"),
-            null,
+            "rowid = \"${id}\"",
             null,
             null,
             null,
@@ -99,8 +106,8 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
 
         val description = findViewById<EditText>(R.id.edtDescription).text.toString()
         val status = findViewById<Spinner>(R.id.spnStatus)
-        val createdDate = DBHelper.ISO_FORMAT.parse(LocalDate.now().toString())
-        val updatedDate = DBHelper.ISO_FORMAT.parse(LocalDate.now().toString())
+        val createdDate = LocalDate.now().toString()
+        val updatedDate = LocalDate.now().toString()
         // TODO #15: add a new item to the bucket list based on the information provided by the user
         // both created_date and update_date should be set to current's date (use ISO format)
         // status should be set to Item.SCHEDULED
@@ -110,7 +117,7 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
 
                     """
                             INSERT INTO bucketlist VALUES
-                                ("${description}","${createdDate}" ,"${updatedDate}","${status}")
+                                ("${description}", "${createdDate}","${updatedDate}","${status}")
                         """)
                 Toast.makeText(this, "Bucket list item successfully added!", Toast.LENGTH_SHORT).show()
             } catch (ex: Exception){
