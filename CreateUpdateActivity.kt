@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.view.get
 import java.time.LocalDate
 import java.util.*
 
@@ -105,7 +106,7 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View?) {
 
         val description = findViewById<EditText>(R.id.edtDescription).text.toString()
-        val status = findViewById<Spinner>(R.id.spnStatus)
+        val status = spnStatus.selectedItemPosition
         val createdDate = LocalDate.now().toString()
         val updatedDate = LocalDate.now().toString()
         // TODOd #15: add a new item to the bucket list based on the information provided by the user
