@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         val txtDescription:TextView = view.findViewById(R.id.txtDescription)//string
         val txtCreationDate:TextView = view.findViewById(R.id.txtCreationDate)//date
         val txtUpdateDate:TextView = view.findViewById(R.id.txtUpdateDate)//date
-        val txtStatus:TextView = view.findViewById(R.id.txtStatus)//int
+        val txtStatus: ImageView = view.findViewById(R.id.txtStatus)//int
     }
 
     // TODOd #2: create the ItemAdapter inner class
@@ -55,7 +56,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
             holder.txtDescription.text = "Description: " + item.description
             holder.txtCreationDate.text = "Date created: "+ DBHelper.USA_FORMAT.format(item.creationDate).toString()
             holder.txtUpdateDate.text = "Date updated: " + DBHelper.USA_FORMAT.format(item.updateDate).toString()
-            holder.txtStatus.text = "Status: " + Item.STATUS_DESCRIPTIONS[item.status]
+            //holder.txtStatus.setImageResource(R.drawable.scheduled_item)
+
+            if (item.status == 0){
+                holder.txtStatus.setImageResource(R.drawable.scheduled_item)
+
+            } else if (item.status == 1) {
+                holder.txtStatus.setImageResource(R.drawable.completed_item)
+
+            } else if (item.status == 2){
+                holder.txtStatus.setImageResource(R.drawable.archived_item)
+
+            }
 
             holder.itemView.setOnClickListener(onClickListener)
             holder.itemView.setOnLongClickListener(onLongClickListener)
