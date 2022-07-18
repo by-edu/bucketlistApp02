@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
     lateinit var dbHelper: DBHelper
     //var id : Int = 0
 
-    // TODO #1: create the ItemHolder inner class
+    // TODOd #1: create the ItemHolder inner class
     // a holder object saves the references to view components of a recycler view item
     private inner class ItemHolder(view: View): RecyclerView.ViewHolder(view) {
 
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         val txtStatus:TextView = view.findViewById(R.id.txtStatus)//int
     }
 
-    // TODO #2: create the ItemAdapter inner class
+    // TODOd #2: create the ItemAdapter inner class
     // an item adapter binds items from a list to holder objects in a recycler view
     private inner class ItemAdapter(var bucketlist: List<Item>, var onClickListener: View.OnClickListener, var onLongClickListener: View.OnLongClickListener): RecyclerView.Adapter<ItemHolder>() {
 
@@ -66,7 +67,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         }
     }
 
-    // TODO #3: populate the recycler view
+    // TODOd #3: populate the recycler view
     // this function should query the database for all of the bucket list items; then use the list to update the recycler view's adapter
     // don't forget to call "sort()" on your list so the items are displayed in the correct order
     fun populateRecyclerView() {
@@ -109,7 +110,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // TODO #4: create and populate the recycler view
+        // TODOd #4: create and populate the recycler view
         dbHelper = DBHelper(this)
         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -117,7 +118,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         populateRecyclerView()
 
 
-        // TODO #5: initialize the floating action button
+        // TODOd #5: initialize the floating action button
         val fltBtnCreate : FloatingActionButton = findViewById(R.id.fltBtnCreate)
         fltBtnCreate.setOnClickListener{
 
@@ -133,7 +134,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         populateRecyclerView()
     }
 
-    // TODO #6: call CreateUpdateActivity for update
+    // TODOd #6: call CreateUpdateActivity for update
     // don't forget to pass the item's id to the CreateUpdateActivity via the intent
     override fun onClick(view: View?) {
         if (view != null) {
@@ -147,7 +148,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         }
     }
 
-    // TODO #7: delete the long tapped item after a yes/no confirmation dialog
+    // TODOd #7: delete the long tapped item after a yes/no confirmation dialog
     override fun onLongClick(view: View?): Boolean {
 
         class MyDialogInterfaceListener(val id: Int): DialogInterface.OnClickListener {
@@ -161,6 +162,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
                                 WHERE rowid = "${id}"
                             """
                         )
+                        onResume()
 
                     } catch (ex: Exception) {
 

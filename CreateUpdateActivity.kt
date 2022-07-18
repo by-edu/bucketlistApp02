@@ -34,26 +34,26 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_update)
 
-        // TODO #8: get references to the view objects
+        // TODOd #8: get references to the view objects
         edtDescription = findViewById(R.id.edtDescription)
         spnStatus = findViewById(R.id.spnStatus)
 
-        // TODO #9: define the spinner's adapter as an ArrayAdapter of String
+        // TODOd #9: define the spinner's adapter as an ArrayAdapter of String
         spnStatus.adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,Item.STATUS_DESCRIPTIONS)
 
-        // TODO #10: get a reference to the "CREATE/UPDATE" button and sets its listener
+        // TODOd #10: get a reference to the "CREATE/UPDATE" button and sets its listener
         val btnCreateUpdate : Button = findViewById(R.id.btnCreateUpdate)
         btnCreateUpdate.setOnClickListener(this)
 
 
-        // TODO #11: get a "writable" db connection
+        // TODOd #11: get a "writable" db connection
         val dbHelper = DBHelper(this)
         db = dbHelper.writableDatabase
 
 
         op = intent.getIntExtra("op", CREATE_OP)
 
-        // TODO #12: set the button's text to "CREATE"; make sure the spinner's selection is Item.SCHEDULED and the spinner is not enabled
+        // TODOd #12: set the button's text to "CREATE"; make sure the spinner's selection is Item.SCHEDULED and the spinner is not enabled
         if (op == CREATE_OP) {
 
             btnCreateUpdate.text = "Create"
@@ -62,7 +62,7 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
 
             spnStatus.isEnabled = false
         }
-        // TODO #13: set the button's text to "UPDATE"; extract the item's id from the intent; use retrieveItem to retrieve the item's info; use the info to update the description and status view components
+        // TODOd #13: set the button's text to "UPDATE"; extract the item's id from the intent; use retrieveItem to retrieve the item's info; use the info to update the description and status view components
         else {
             op = UPDATE_OP
             id = intent.getIntExtra("id", id)
@@ -76,7 +76,7 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    // TODO #14: return the item based on the given id
+    // TODOd #14: return the item based on the given id
     // this function should query the database for the bucket list item identified by the given id; an item object should be returned
     fun retrieveItem(id: Int): Item {
         val cursor = db.query(
@@ -108,7 +108,7 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
         val status = findViewById<Spinner>(R.id.spnStatus)
         val createdDate = LocalDate.now().toString()
         val updatedDate = LocalDate.now().toString()
-        // TODO #15: add a new item to the bucket list based on the information provided by the user
+        // TODOd #15: add a new item to the bucket list based on the information provided by the user
         // both created_date and update_date should be set to current's date (use ISO format)
         // status should be set to Item.SCHEDULED
         if (op == CREATE_OP) {
@@ -126,7 +126,7 @@ class CreateUpdateActivity : AppCompatActivity(), View.OnClickListener {
             }
 
         }
-        // TODO #16: update the item identified by "id"
+        // TODOd #16: update the item identified by "id"
         // update_date should be set to current's date (use ISO format)
         else {
             try {
